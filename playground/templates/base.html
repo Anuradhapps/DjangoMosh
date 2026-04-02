@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My Django Project{% endblock %}</title>
+
+    <!-- CSS files -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <!-- Browser reload for template changes (optional) -->
+    {% if debug %}
+    <script src="{% url 'django_browser_reload' %}"></script>
+    {% endif %}
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <h1>My Django Website</h1>
+      <nav>
+        <a href="/">Home</a> | <a href="/products/">Products</a> |
+        <a href="/about/">About</a>
+      </nav>
+    </header>
+
+    <!-- Main content -->
+    <main>
+      {% block content %}
+      <!-- Page-specific content will go here -->
+      {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2026 My Django Project</p>
+    </footer>
+
+    <!-- JS files -->
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>
