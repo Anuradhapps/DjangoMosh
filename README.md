@@ -2,53 +2,53 @@
 
 A Django learning project with multiple apps, MySQL support, debug toolbar integration, browser reload support, and app-level static assets.
 
-## Tech Stack
+## What You Need
 
 - Python 3.14
-- Django 6.0.3
-- MySQL
-- `python-decouple` for environment variables
-- `django-debug-toolbar` for request/debug inspection
-- `django-browser-reload` for auto refresh during development
+- MySQL installed and running
+- Git installed
 
-## Project Structure
+## Project Files
 
-- `djangomosh/` - project settings, root URL config, WSGI/ASGI entry points
+- `manage.py` - Django command-line entry point
+- `djangomosh/` - project settings, URL config, WSGI/ASGI entry points
 - `playground/` - main app, templates, and static files
 - `store/` - store-related models and views
 - `tags/` - tag-related models and views
 - `likes/` - like-related models and views
-- `manage.py` - Django command-line entry point
+- `.env.example` - sample environment file
+- `.gitignore` - ignores local files, secrets, caches, and virtual environments
 
 ## Static Files
 
-This project does not use a root-level `static/` folder. The active static assets live under:
+Static files live in the app-level folder:
 
 - `playground/static/css/style.css`
 
-The settings file is configured with:
+The project is configured with:
 
 ```python
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "playground" / "static"]
 ```
 
-That means template references like this work correctly:
+That means your templates should load CSS like this:
 
 ```html
 {% load static %} <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 ```
 
-If you add more CSS, JavaScript, or images, place them inside `playground/static/` so Django can find them automatically in development.
+## Dependencies
 
-## Requirements
+Install packages from `requirements.txt`.
 
-Install dependencies from `requirements.txt`. The file pins the project packages used in this workspace, including Django, MySQL support, debug toolbar, browser reload, and the supporting libraries already listed there.
+This project uses:
 
-The repository also includes:
-
-- `.env.example` - template for local environment variables
-- `.gitignore` - excludes secrets, virtual environments, caches, and build artifacts
+- `Django`
+- `python-decouple`
+- `django-debug-toolbar`
+- `django-browser-reload`
+- `mysqlclient`
 
 ## Step-by-Step Setup
 
@@ -59,36 +59,53 @@ git clone <your-github-repo-url>
 cd DjangoMosh
 ```
 
-### 2. Create and activate a virtual environment
+### 2. Create a virtual environment
 
-On Windows PowerShell:
+Windows PowerShell:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
 ```
 
-On macOS/Linux:
+macOS/Linux:
 
 ```bash
 python3 -m venv .venv
+```
+
+### 3. Activate the virtual environment
+
+Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+macOS/Linux:
+
+```bash
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 4. Upgrade pip
 
 ```bash
-pip install --upgrade pip
+python -m pip install --upgrade pip
+```
+
+### 5. Install project dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-If `mysqlclient` gives you trouble on Windows, make sure you are using a Python version that matches the available wheel or install the required build tools for MySQL client packages.
+If `mysqlclient` fails on Windows, make sure your Python version matches the available wheel, or install the MySQL build tools required for that package.
 
-### 4. Create your local `.env` file
+### 6. Create your `.env` file
 
-Start by copying `.env.example` to `.env`, then edit the values for your machine.
+Copy `.env.example` to `.env`, then edit the values for your machine.
 
-Create a file named `.env` in the project root with the variables expected by `djangomosh/settings.py`:
+Example `.env`:
 
 ```env
 DEBUG=True
@@ -100,83 +117,82 @@ DATABASE_HOST=localhost
 DATABASE_PORT=3306
 ```
 
-Notes:
+Important:
 
-- `SECRET_KEY` must be unique for your machine and should not be committed.
-- `DEBUG=True` is fine for local development only.
-- Update the MySQL values if your local database uses a different user, password, host, or port.
-- `.env` is ignored by Git, so secrets stay local.
+- Do not commit `.env`
+- Keep `SECRET_KEY` private
+- Change the database values if your local MySQL setup is different
 
-### 5. Review the static files path
+### 7. Create the MySQL database
 
-The project serves static files from the app-level directory:
-
-- `playground/static/css/style.css`
-
-If you add more CSS, JavaScript, or images, place them inside `playground/static/` so Django can find them automatically in development.
-
-### 6. Create the MySQL database
-
-Make sure MySQL is running, then create the database referenced in `.env`.
-
-Example:
+Log in to MySQL and create the database used in `.env`.
 
 ```sql
 CREATE DATABASE django_test;
 ```
 
-If you use a different database name, update `DATABASE_NAME` in `.env` to match.
+If you choose another database name, update `DATABASE_NAME` in `.env`.
 
-### 7. Run migrations
+### 8. Run Django migrations
 
 ```bash
 python manage.py migrate
 ```
 
-This creates the Django tables and applies the app migrations already included in the repository.
-
-### 8. Create an admin user
+### 9. Create an admin user
 
 ```bash
 python manage.py createsuperuser
 ```
 
-Follow the prompts to set a username, email, and password.
-
-### 9. Start the development server
+### 10. Start the development server
 
 ```bash
 python manage.py runserver
 ```
 
-Open:
+Open these URLs in your browser:
 
 - `http://127.0.0.1:8000/`
 - `http://127.0.0.1:8000/admin/`
-- `http://127.0.0.1:8000/__debug__/` for Django Debug Toolbar
-- `http://127.0.0.1:8000/__reload__/` for browser reload support
+- `http://127.0.0.1:8000/__debug__/`
+- `http://127.0.0.1:8000/__reload__/`
 
-## Useful Django Commands
+## Example Workflow After Cloning
 
-- `python manage.py check` - verify the project configuration
-- `python manage.py makemigrations` - create new migrations after model changes
-- `python manage.py migrate` - apply migrations
-- `python manage.py runserver` - start the local server
-- `python manage.py createsuperuser` - create an admin account
+```bash
+git clone <your-github-repo-url>
+cd DjangoMosh
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+copy .env.example .env
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+## Common Commands
+
+```bash
+python manage.py check
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
 
 ## Development Notes
 
-- The project uses `python-decouple` to read settings from environment variables.
-- `DEBUG_TOOLBAR` is enabled through `INSTALLED_APPS` and middleware.
-- `django-browser-reload` is enabled for automatic page refresh in development.
-- The project URL config includes the main app, admin, debug toolbar, and browser reload routes.
-- The root `.gitignore` excludes `.env`, `.venv/`, caches, logs, coverage output, and other local-only files.
+- `python-decouple` reads settings from environment variables in `djangomosh/settings.py`
+- `django-debug-toolbar` is enabled in `INSTALLED_APPS` and `MIDDLEWARE`
+- `django-browser-reload` is enabled for development refresh
+- `.gitignore` excludes `.env`, `.venv/`, caches, logs, and build artifacts
 
 ## Troubleshooting
 
 ### `ImportError: No module named 'decouple'`
-
-Install dependencies into the active virtual environment:
 
 ```bash
 pip install -r requirements.txt
@@ -184,7 +200,7 @@ pip install -r requirements.txt
 
 ### `ImportError: Couldn't import Django`
 
-Make sure the virtual environment is activated and `django` is installed in that same environment.
+Activate the correct virtual environment and install dependencies again.
 
 ### MySQL connection errors
 
@@ -197,7 +213,7 @@ Check that:
 
 ### Static files not loading
 
-Confirm your templates use:
+Make sure your template uses:
 
 ```html
 {% load static %} <link rel="stylesheet" href="{% static 'css/style.css' %}" />
@@ -207,9 +223,9 @@ and that the file exists at:
 
 - `playground/static/css/style.css`
 
-## Notes for Production
+## Production Notes
 
 - Set `DEBUG=False`
 - Use a strong `SECRET_KEY`
 - Use production database credentials
-- Run `python manage.py collectstatic` before deploying static assets
+- Run `python manage.py collectstatic` before deployment
