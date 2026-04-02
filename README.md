@@ -45,6 +45,11 @@ If you add more CSS, JavaScript, or images, place them inside `playground/static
 
 Install dependencies from `requirements.txt`. The file pins the project packages used in this workspace, including Django, MySQL support, debug toolbar, browser reload, and the supporting libraries already listed there.
 
+The repository also includes:
+
+- `.env.example` - template for local environment variables
+- `.gitignore` - excludes secrets, virtual environments, caches, and build artifacts
+
 ## Step-by-Step Setup
 
 ### 1. Clone the repository
@@ -81,6 +86,8 @@ If `mysqlclient` gives you trouble on Windows, make sure you are using a Python 
 
 ### 4. Create your local `.env` file
 
+Start by copying `.env.example` to `.env`, then edit the values for your machine.
+
 Create a file named `.env` in the project root with the variables expected by `djangomosh/settings.py`:
 
 ```env
@@ -98,8 +105,17 @@ Notes:
 - `SECRET_KEY` must be unique for your machine and should not be committed.
 - `DEBUG=True` is fine for local development only.
 - Update the MySQL values if your local database uses a different user, password, host, or port.
+- `.env` is ignored by Git, so secrets stay local.
 
-### 5. Create the MySQL database
+### 5. Review the static files path
+
+The project serves static files from the app-level directory:
+
+- `playground/static/css/style.css`
+
+If you add more CSS, JavaScript, or images, place them inside `playground/static/` so Django can find them automatically in development.
+
+### 6. Create the MySQL database
 
 Make sure MySQL is running, then create the database referenced in `.env`.
 
@@ -111,7 +127,7 @@ CREATE DATABASE django_test;
 
 If you use a different database name, update `DATABASE_NAME` in `.env` to match.
 
-### 6. Run migrations
+### 7. Run migrations
 
 ```bash
 python manage.py migrate
@@ -119,7 +135,7 @@ python manage.py migrate
 
 This creates the Django tables and applies the app migrations already included in the repository.
 
-### 7. Create an admin user
+### 8. Create an admin user
 
 ```bash
 python manage.py createsuperuser
@@ -127,7 +143,7 @@ python manage.py createsuperuser
 
 Follow the prompts to set a username, email, and password.
 
-### 8. Start the development server
+### 9. Start the development server
 
 ```bash
 python manage.py runserver
@@ -154,6 +170,7 @@ Open:
 - `DEBUG_TOOLBAR` is enabled through `INSTALLED_APPS` and middleware.
 - `django-browser-reload` is enabled for automatic page refresh in development.
 - The project URL config includes the main app, admin, debug toolbar, and browser reload routes.
+- The root `.gitignore` excludes `.env`, `.venv/`, caches, logs, coverage output, and other local-only files.
 
 ## Troubleshooting
 
