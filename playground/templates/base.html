@@ -1,41 +1,74 @@
 {% load static %}
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}My Django Project{% endblock %}</title>
-
-    <!-- CSS files -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <!-- Browser reload for template changes (optional) -->
     {% if debug %}
     <script src="{% url 'django_browser_reload' %}"></script>
     {% endif %}
   </head>
-  <body>
+
+  <body class="min-h-full bg-slate-100 text-slate-800">
     <!-- Header -->
-    <header>
-      <h1>My Django Website</h1>
-      <nav>
-        <a href="/">Home</a> | <a href="/products/">Products</a> |
-        <a href="/about/">About</a>
-      </nav>
+    <header
+      class="sticky top-0 z-50 border-b border-slate-200 bg-blue-400/95 backdrop-blur"
+    >
+      <div class="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+        <div
+          class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <a
+            href="/"
+            class="text-lg font-bold tracking-tight text-slate-900 sm:text-xl"
+          >
+            My Django Website
+          </a>
+
+          <nav class="flex flex-wrap gap-2 text-sm font-medium sm:justify-end">
+            <a
+              href="/"
+              class="rounded-md px-3 py-2 transition hover:bg-slate-100 hover:text-blue-600"
+              >Home</a
+            >
+            <a
+              href="/products/"
+              class="rounded-md px-3 py-2 transition hover:bg-slate-100 hover:text-blue-600"
+              >Products</a
+            >
+            <a
+              href="/about/"
+              class="rounded-md px-3 py-2 transition hover:bg-slate-100 hover:text-blue-600"
+              >About</a
+            >
+          </nav>
+        </div>
+      </div>
     </header>
 
     <!-- Main content -->
-    <main>
-      {% block content %}
-      <!-- Page-specific content will go here -->
-      {% endblock %}
+    <main class="mx-auto max-w-7xl px-4 py-4 sm:px-6 sm:py-8 lg:px-8">
+      <div
+        class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 sm:p-6 lg:p-8"
+      >
+        {% block content %}
+        <!-- Page-specific content will go here -->
+        {% endblock %}
+      </div>
     </main>
 
     <!-- Footer -->
-    <footer>
-      <p>&copy; 2026 My Django Project</p>
+    <footer class="border-t border-slate-200 bg-white">
+      <div
+        class="mx-auto max-w-7xl px-4 py-4 text-center text-sm text-slate-500 sm:px-6 lg:px-8"
+      >
+        &copy; 2026 My Django Project
+      </div>
     </footer>
 
-    <!-- JS files -->
     <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>
